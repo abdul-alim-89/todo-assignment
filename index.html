@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Todo App</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
  <style>
@@ -30,8 +33,9 @@
     align-items: self-start;
     list-style-type: none;
     margin: 0px;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     gap: 8px;
+    padding: 10px;
     }
     #todo-lists  li{
             padding: 15px;
@@ -125,6 +129,12 @@ padding: 10px;
     border-radius: 100%;
 
     }
+    .status{
+        padding: 5px;
+    font-size: 12px;
+    border-radius: 8px;
+    }
+ 
  </style>
 </head>
 <body>
@@ -169,7 +179,7 @@ padding: 10px;
 <label for="status">Status</label><br>
 <select id="update-status" name="status" required>
             <option value="true">Completed</option>
-            <option value="false" selected>In-progress</option>
+            <option value="false">In-progress</option>
         </select><br>
 <input type="hidden" id="update-todo-id" name="todo-id" value="">
 <input type="submit" value="Update Todo">
@@ -294,7 +304,7 @@ todos.map((item)=>{
             <span onclick="delete_todo('${item.id}')"><i style="color:black;" class="fa fa-trash-o"></i></span>
         </div>
         </div>
-        <p><select onchange="update_status('${item.id}')">
+        <p><select class="status" onchange="update_status('${item.id}')">
             <option value="true" ${item.isCompleted == true ? "selected": ""}>Completed</option>
             <option value="false" ${item.isCompleted == false ? "selected": ""}>In-progress</option>
         </select></p>

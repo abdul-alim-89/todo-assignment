@@ -135,7 +135,7 @@ padding: 10px;
     <div class="form-section">
         <form id="add-todo">
             <input type="text" name="title" placeholder="Add title" required>
-            <input type="submit" value="Add Todd">
+            <input type="submit" value="Add Todo">
         </form>
     </div>
    <div class="todo-section">
@@ -151,8 +151,8 @@ padding: 10px;
         <p>Updated: </p>
         </div>
         <div class="action">
-            <button onclick="get_task('1')">Edit</button>
-            <button onclick="delete_task('1')">Delete</button>
+            <button onclick="get_todo('1')">Edit</button>
+            <button onclick="delete_todo('1')">Delete</button>
         </div>
     </li> -->
    </ul>
@@ -180,7 +180,7 @@ padding: 10px;
 </main>
 <script>
 
-let tasks = [];
+let todos = [];
 const form = document.getElementById("add-todo");
 const ul = document.getElementById("todo-lists");
 const update_form = document.getElementById("update-todo");
@@ -188,33 +188,37 @@ const model = document.getElementById("update-todo-model");
 const closeBtn = document.getElementById("close-btn");
 console.log(model);
 
-form.addEventListener("submit", add_task);
-update_form.addEventListener("submit", update_task);
+form.addEventListener("submit", add_todo);
+update_form.addEventListener("submit", update_todo);
 closeBtn.addEventListener("click", close_model);
 function close_model(){
   model.style.display = "none";
 }
-function add_task(e){
+function add_todo(e){
  e.preventDefault();
    const formData = e.target;
    const formValue = new FormData(formData);
    const title = formValue.get("title");
+   if(title.trim() == ''){
+    alert("Title is required");
+    return
+   }
    const date = new Date();
    const simple_date = new Date(date).toLocaleDateString();
    console.log(title)
-   let task = {
-    id: tasks.length + 1,
+   let todo = {
+    id: todos.length + 1,
     title: title,
     isCompleted: false,
     created: simple_date,
     updated: ''
    }
-   tasks.push(task);
-   console.log(tasks)
+   todos.push(todo);
+   console.log(todos)
    form.reset();
    display_todos();
 }
-function update_task(e){
+function update_todo(e){
 e.preventDefault();
  
  const formData = e.target;
@@ -223,7 +227,7 @@ e.preventDefault();
  const title = formValue.get("title");
  const id = formValue.get("todo-id");
  const status = formValue.get("status");
-const find_todo = tasks.find((item)=>{
+const find_todo = todos.find((item)=>{
     return item.id == id
 })
 
@@ -241,53 +245,53 @@ model.style.display = "none";
 display_todos();
 
 }
-function delete_task(id){
+function delete_todo(id){
 
-    const filter_task = tasks.filter((item)=>{
+    const filter_todo = todos.filter((item)=>{
         return item.id != id
     })
-    tasks = filter_task;
+    todos = filter_todo;
     display_todos();
 
 }
 
-function get_task(id){
-const get_task = tasks.find((item)=>{
+function get_todo(id){
+const get_todo = todos.find((item)=>{
     return item.id == id;
 })
 
-document.getElementById("update-title").value = get_task.title;
-document.getElementById("update-status").value = get_task.isCompleted;
-document.getElementById("update-todo-id").value = get_task.id;
+document.getElementById("update-title").value = get_todo.title;
+document.getElementById("update-status").value = get_todo.isCompleted;
+document.getElementById("update-todo-id").value = get_todo.id;
 model.style.display = "block";
 
 }
 
 function update_status(id){
-const task = tasks.find((item)=>{
+const todo = todos.find((item)=>{
     return item.id == id
 })
-task.isCompleted = !task.isCompleted;
+todo.isCompleted = !todo.isCompleted;
 display_todos();
-console.log(tasks);
+console.log(todos);
 }
 
 function display_todos(){
     let content = '';
-    if(tasks.length == 0){
-        content += '<li> Task not found </li>';
+    if(todos.length == 0){
+        content += '<li> todo not found </li>';
         ul.innerHTML = content;
         return;
        
     }
-tasks.map((item)=>{
+todos.map((item)=>{
     content += `<li>
         <div class="top-con">
         <h3 class="todo-title">${item.title}</h3>
         <div class="action">
             <i class='fas fa-edit'></i>
-            <span onclick="get_task('${item.id}')"><i style="color:black;" class="fa fa-edit"></i></span>
-            <span onclick="delete_task('${item.id}')"><i style="color:black;" class="fa fa-trash-o"></i></span>
+            <span onclick="get_todo('${item.id}')"><i style="color:black;" class="fa fa-edit"></i></span>
+            <span onclick="delete_todo('${item.id}')"><i style="color:black;" class="fa fa-trash-o"></i></span>
         </div>
         </div>
         <p><select onchange="update_status('${item.id}')">

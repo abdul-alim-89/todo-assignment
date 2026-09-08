@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Todo App</title>
+</head>
+<body>
+
+<main>
+<section>
+    <h1>My Todo App</h1>
+    <div>
+        <form id="add-todo">
+            <input type="text" name="title" placeholder="Add title" required>
+            <input type="submit" value="Add Todd">
+        </form>
+    </div>
+   <div class="todo-section">
+   <ul id="todo-lists">
+    <li>
+        <h4>Todo title</h4>
+        <p><select>
+            <option value="true">Completed</option>
+            <option value="false" selected>In-progress</option>
+        </select></p>
+        <div>
+        <p>Created: </p>
+        <p>Updated: </p>
+        </div>
+        <div class="action">
+            <button onclick="get_task('1')">Edit</button>
+            <button onclick="delete_task('1')">Delete</button>
+        </div>
+    </li>
+   </ul>
+   </div>
+</table>
+</section>
+<div class="model update-todo-model">
+<form id="update-todo">
+<input type="text" name="title" id="update-title" required>
+<select id="update-status" name="status" required>
+            <option value="true">Completed</option>
+            <option value="false" selected>In-progress</option>
+        </select>
+<input type="hidden" id="update-todo-id" name="todo-id" value="">
+<input type="submit" value="Update Todo">
+
+</form>
+</div>
+</main>
+<script>
+
+let tasks = [{
+    id:1,
+    title: "This is test",
+    isCompleted: false,
+    created:"8-9-2026",
+    updated: ""
+}];
+const form = document.getElementById("add-todo");
+const ul = document.getElementById("todo-lists");
+const update_form = document.getElementById("update-todo");
+
+form.addEventListener("submit", add_task)
+update_form.addEventListener("submit", update_task)
+function add_task(e){
+ e.preventDefault();
+   const formData = e.target;
+   const formValue = new FormData(formData);
+   const title = formValue.get("title");
+   const date = new Date();
+   const simple_date = new Date(date).toLocaleDateString();
+   console.log(title)
+   let task = {
+    id: tasks.length + 1,
+    title: title,
+    isCompleted: false,
+    created: simple_date,
+    updated: ''
+   }
+   tasks.push(task);
+   console.log(tasks)
+   form.reset();
+   display_todos();
+}
+function update_task(e){
+e.preventDefault();
+ const formData = e.target;
+ const formValue = new FormData(formData);
+ console.log(formValue);
+ const title = formValue.get("title");
+ const id = formValue.get("todo-id");
+ const status = formValue.get("status");
+const find_todo = tasks.find((item)=>{
+    return item.id == id
+})
+
+if(!find_todo)
+{
+    alert("Todo not found")
+}
+const date = new Date();
+find_todo.title = title;
+find_todo.isCompleted = status;
+find_todo.updated = date;
+
+display_todos();
+
+}
+function delete_task(id){
+
+    const filter_task = tasks.filter((item)=>{
+        return item.id != id
+    })
+    tasks = filter_task;
+    display_todos();
+
+}
+
+function get_task(id){
+const get_task = tasks.find((item)=>{
+    return item.id == id;
+})
+
+document.getElementById("update-title").value = get_task.title;
+document.getElementById("update-status").value = get_task.isCompleted;
+document.getElementById("update-todo-id").value = get_task.id;
+
+}
+
+function update_status(id){
+const task = tasks.find((item)=>{
+    return item.id == id
+})
+task.isCompleted = !task.isCompleted;
+display_todos();
+console.log(tasks);
+}
+
+function display_todos(){
+    let content = '';
+tasks.map((item)=>{
+    content += `<li>
+        <h4>${item.title}</h4>
+        <p><select onchange="update_status('${item.id}')">
+            <option value="true" ${item.isCompleted == true ? "selected": ""}>Completed</option>
+            <option value="false" ${item.isCompleted == false ? "selected": ""}>In-progress</option>
+        </select></p>
+        <div>
+        <p>Created: ${item.created}</p>
+        <p>Updated: ${item.updated}</p>
+        </div>
+        <div class="action">
+            <button onclick="get_task('${item.id}')">Edit</button>
+            <button onclick="delete_task('${item.id}')">Delete</button>
+        </div>
+    </li>`;
+})
+
+ul.innerHTML = content;
+}
+
+</script>
+</body>
+</html>

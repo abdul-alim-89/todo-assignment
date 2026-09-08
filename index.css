@@ -1,0 +1,127 @@
+ body {
+        padding: 0px;
+        margin: 0px;
+    }
+    .top-heading{
+        text-align: center;
+    background: #4242b9;
+    margin: 0px;
+    padding: 15px 20px;
+    font-size: 38px;
+    color: white;
+    }
+    .todo-section{
+        margin-top: 20px;
+    }
+    .form-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    #todo-lists{
+        display: flex;
+    justify-content: center;
+    align-items: self-start;
+    list-style-type: none;
+    margin: 0px;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px;
+    }
+    #todo-lists  li{
+            padding: 15px;
+    border: 1px solid grey;
+    border-radius: 10px;
+    }
+    .date-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    }
+    .todo-title{
+        margin: 0px;
+        color: #4242b9;
+        font-size: 22px;
+    }
+    .date-section p {
+        font-size: 14px;
+        color: gray;
+  
+    margin: 0px;
+    }
+    .top-con {
+display: flex;
+    justify-content: space-between;
+    align-items: center;
+    }
+    .form-section {
+            padding: 15px;
+    font-size: 16px;
+    }
+    .form-section input[type="text"] {
+padding: 10px;
+    border: 8px;
+    border-bottom: 2px solid;
+    }
+    .form-section input[type="submit"] {
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    background: #4242b9;
+    font-size: 15px;
+    color: white;
+    }
+    .model{
+        display: none; /* Hidden by default */
+  position: absolute; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+    .model-content{
+    max-width: 300px;
+    width: 100%;
+    padding: 25px;
+    background: #fff;
+    position: absolute;
+     top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+    }
+    .model-content input[type="text"], .model-content select{
+        margin-bottom: 10px;
+        padding: 4px;
+    max-width: 100%;
+    width: 100%;
+    border-radius: 5px;
+    }
+    .model-content input[type="submit"]{
+         padding: 12px;
+    border-radius: 8px;
+    border: none;
+    background: #4242b9;
+    font-size: 15px;
+    color: white;
+    border-radius: 8px;
+    }
+    #close-btn{
+        text-align: right;
+    position: absolute;
+    top: -7px;
+    right: -3px;
+    padding: 10px;
+    background: #4242b9;
+    border-radius: 100%;
+
+    }
+    .status{
+        padding: 5px;
+    font-size: 12px;
+    border-radius: 8px;
+    }

@@ -2,13 +2,137 @@
 <html>
 <head>
 <title>Todo App</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+ <style>
+    body {
+        padding: 0px;
+        margin: 0px;
+    }
+    .top-heading{
+        text-align: center;
+    background: #4242b9;
+    margin: 0px;
+    padding: 15px 20px;
+    font-size: 38px;
+    color: white;
+    }
+    .todo-section{
+        margin-top: 20px;
+    }
+    .form-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    #todo-lists{
+        display: flex;
+    justify-content: center;
+    align-items: self-start;
+    list-style-type: none;
+    margin: 0px;
+    flex-wrap: nowrap;
+    gap: 8px;
+    }
+    #todo-lists  li{
+            padding: 15px;
+    border: 1px solid grey;
+    border-radius: 10px;
+    }
+    .date-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    }
+    .todo-title{
+        margin: 0px;
+        color: #4242b9;
+        font-size: 22px;
+    }
+    .date-section p {
+        font-size: 14px;
+        color: gray;
+  
+    margin: 0px;
+    }
+    .top-con {
+display: flex;
+    justify-content: space-between;
+    align-items: center;
+    }
+    .form-section {
+            padding: 15px;
+    font-size: 16px;
+    }
+    .form-section input[type="text"] {
+padding: 10px;
+    border: 8px;
+    border-bottom: 2px solid;
+    }
+    .form-section input[type="submit"] {
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    background: #4242b9;
+    font-size: 15px;
+    color: white;
+    }
+    .model{
+        display: none; /* Hidden by default */
+  position: absolute; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+    .model-content{
+    max-width: 300px;
+    width: 100%;
+    padding: 25px;
+    background: #fff;
+    position: absolute;
+     top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+    }
+    .model-content input[type="text"], .model-content select{
+        margin-bottom: 10px;
+        padding: 4px;
+    max-width: 100%;
+    width: 100%;
+    border-radius: 5px;
+    }
+    .model-content input[type="submit"]{
+         padding: 12px;
+    border-radius: 8px;
+    border: none;
+    background: #4242b9;
+    font-size: 15px;
+    color: white;
+    border-radius: 8px;
+    }
+    #close-btn{
+        text-align: right;
+    position: absolute;
+    top: -7px;
+    right: -3px;
+    padding: 10px;
+    background: #4242b9;
+    border-radius: 100%;
+
+    }
+ </style>
 </head>
 <body>
 
 <main>
 <section>
-    <h1>My Todo App</h1>
-    <div>
+    <h1 style="text-align: center;" class="top-heading">Todo App</h1>
+    <div class="form-section">
         <form id="add-todo">
             <input type="text" name="title" placeholder="Add title" required>
             <input type="submit" value="Add Todd">
@@ -16,7 +140,7 @@
     </div>
    <div class="todo-section">
    <ul id="todo-lists">
-    <li>
+    <!-- <li>
         <h4>Todo title</h4>
         <p><select>
             <option value="true">Completed</option>
@@ -30,39 +154,46 @@
             <button onclick="get_task('1')">Edit</button>
             <button onclick="delete_task('1')">Delete</button>
         </div>
-    </li>
+    </li> -->
    </ul>
    </div>
 </table>
 </section>
-<div class="model update-todo-model">
+<div id="update-todo-model" class="model">
+    <div class="model-content">
+    <span style="text-align: right;" id="close-btn">X</span>
+    <h3>Update Todo</h3>
 <form id="update-todo">
-<input type="text" name="title" id="update-title" required>
+<label for="title">Title</label><br>
+<input type="text" name="title" id="update-title" required><br>
+<label for="status">Status</label><br>
 <select id="update-status" name="status" required>
             <option value="true">Completed</option>
             <option value="false" selected>In-progress</option>
-        </select>
+        </select><br>
 <input type="hidden" id="update-todo-id" name="todo-id" value="">
 <input type="submit" value="Update Todo">
 
 </form>
 </div>
+</div>
 </main>
 <script>
 
-let tasks = [{
-    id:1,
-    title: "This is test",
-    isCompleted: false,
-    created:"8-9-2026",
-    updated: ""
-}];
+let tasks = [];
 const form = document.getElementById("add-todo");
 const ul = document.getElementById("todo-lists");
 const update_form = document.getElementById("update-todo");
+const model = document.getElementById("update-todo-model");
+const closeBtn = document.getElementById("close-btn");
+console.log(model);
 
-form.addEventListener("submit", add_task)
-update_form.addEventListener("submit", update_task)
+form.addEventListener("submit", add_task);
+update_form.addEventListener("submit", update_task);
+closeBtn.addEventListener("click", close_model);
+function close_model(){
+  model.style.display = "none";
+}
 function add_task(e){
  e.preventDefault();
    const formData = e.target;
@@ -85,6 +216,7 @@ function add_task(e){
 }
 function update_task(e){
 e.preventDefault();
+ 
  const formData = e.target;
  const formValue = new FormData(formData);
  console.log(formValue);
@@ -100,10 +232,12 @@ if(!find_todo)
     alert("Todo not found")
 }
 const date = new Date();
+const simple_date = new Date(date).toLocaleDateString();
 find_todo.title = title;
 find_todo.isCompleted = status;
-find_todo.updated = date;
-
+find_todo.updated = simple_date;
+update_form.reset();
+model.style.display = "none";
 display_todos();
 
 }
@@ -125,6 +259,7 @@ const get_task = tasks.find((item)=>{
 document.getElementById("update-title").value = get_task.title;
 document.getElementById("update-status").value = get_task.isCompleted;
 document.getElementById("update-todo-id").value = get_task.id;
+model.style.display = "block";
 
 }
 
@@ -139,26 +274,47 @@ console.log(tasks);
 
 function display_todos(){
     let content = '';
+    if(tasks.length == 0){
+        content += '<li> Task not found </li>';
+        ul.innerHTML = content;
+        return;
+       
+    }
 tasks.map((item)=>{
     content += `<li>
-        <h4>${item.title}</h4>
+        <div class="top-con">
+        <h3 class="todo-title">${item.title}</h3>
+        <div class="action">
+            <i class='fas fa-edit'></i>
+            <span onclick="get_task('${item.id}')"><i style="color:black;" class="fa fa-edit"></i></span>
+            <span onclick="delete_task('${item.id}')"><i style="color:black;" class="fa fa-trash-o"></i></span>
+        </div>
+        </div>
         <p><select onchange="update_status('${item.id}')">
             <option value="true" ${item.isCompleted == true ? "selected": ""}>Completed</option>
             <option value="false" ${item.isCompleted == false ? "selected": ""}>In-progress</option>
         </select></p>
-        <div>
-        <p>Created: ${item.created}</p>
-        <p>Updated: ${item.updated}</p>
-        </div>
-        <div class="action">
-            <button onclick="get_task('${item.id}')">Edit</button>
-            <button onclick="delete_task('${item.id}')">Delete</button>
-        </div>
+        <div class="date-section">
+        <p>Created: ${item.created}</p>`;
+        if(item.updated) {
+            content += `<p>Updated: ${item.updated}</p>`;
+        }
+        else{
+            content += '';
+        }
+
+        //content += (item.updated === '' ? `<p>Updated: ${item.updated}</p>` : '');
+        
+        content += `</div>
+        
     </li>`;
 })
 
 ul.innerHTML = content;
 }
+display_todos();
+
+
 
 </script>
 </body>
